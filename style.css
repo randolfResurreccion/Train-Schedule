@@ -1,0 +1,31 @@
+
+.container {
+    margin: 0, 50px;
+}
+
+
+.jumbotron {
+    text-align: center;
+    background-color: rgb(235, 156, 67);
+}
+
+input {
+    width:95%;
+}
+
+input {
+    margin-bottom: 10px;
+}
+
+.panel > .panel-heading {
+    
+    background-color: rgba(89, 125, 172, 0.842);
+    color: black;
+
+}
+
+.btn-primary {
+    background-color: rgba(89, 125, 172, 0.842);
+    color: black;
+    margin-top: 10px;
+}
