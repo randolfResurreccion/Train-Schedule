@@ -1,100 +1,120 @@
 
-var config = {
-    apiKey: "AIzaSyCCVuXpn7Fmu0zvOC-NldIl4NR7ZPeRHpc",
-    authDomain: "train-schedule-99af3.firebaseapp.com",
-    databaseURL: "https://train-schedule-99af3.firebaseio.com",
-    projectId: "train-schedule-99af3",
-    storageBucket: "train-schedule-99af3.appspot.com",
-    messagingSenderId: "719578964526"
-};
-firebase.initializeApp(config);
+$(document).ready(function () {
 
-var database = firebase.database();
+    function displayTime() {
+        var time = moment().format('HH:mm:ss');
+        $('#clock').html(time);
+        setTimeout(displayTime, 1000);
+    }
 
-//   Initial Value
-
-var trainName;
-var destination;
-var trainTime;
-var freqMinute;
-
-$("#submit").on("click", function () {
-    event.preventDefault();
-
-    trainName = $("#train-input").val().trim();
-    destination = $("#destination-input").val().trim();
-    trainTime = $("#time-input").val().trim();
-    freqMinute = $("#frequency-input").val().trim();
-
-    // local temporary object
-    var trainData = {
-        trainName: trainName,
-        destination: destination,
-        trainTime: trainTime,
-        freqMinute: freqMinute,
-        timeStamp: firebase.database.ServerValue.TIMESTAMP
+    var config = {
+        apiKey: "AIzaSyCCVuXpn7Fmu0zvOC-NldIl4NR7ZPeRHpc",
+        authDomain: "train-schedule-99af3.firebaseapp.com",
+        databaseURL: "https://train-schedule-99af3.firebaseio.com",
+        projectId: "train-schedule-99af3",
+        storageBucket: "train-schedule-99af3.appspot.com",
+        messagingSenderId: "719578964526"
     };
+    firebase.initializeApp(config);
 
-    database.ref().push(trainData);
-//    stop refresh
-    $("input").val('');
-    return false;
+    var database = firebase.database();
 
-    // logs train data to console
-    console.log(trainData.trainName);
-    console.log(trainData.destination);
-    console.log(trainData.trainTime);
-    console.log(trainData.freqMinute);
+    //   Initial Value
 
-    // clear text-box
-    $("#train-input").val("");
-    $("#destination-input").val("");
-    $("#time-input").val();
-    $("#frequency-input").val();
-});
+    var trainName;
+    var destination;
+    var trainTime;
+    var freqMinute;
 
-database.ref().on("child_added", function (childSnapshot, prevChildKey) {
+    $("#submit").on("click", function () {
+        event.preventDefault();
+        displayTime();
 
-    console.log(childSnapshot.val());
-    var trainName = childSnapshot.val().trainName;
-    var trainDestination = childSnapshot.val().destination;
-    var trainTime = childSnapshot.val().trainTime;
-    var trainFrequency = childSnapshot.val().freqMinute;
+        trainName = $("#train-input").val().trim();
+        destination = $("#destination-input").val().trim();
+        trainTime = $("#time-input").val().trim();
+        freqMinute = $("#frequency-input").val().trim();
 
-    var nextArrival = 0;
-    var minsAway = 0;
+        // local temporary object
+        var trainData = {
+            trainName: trainName,
+            destination: destination,
+            trainTime: trainTime,
+            freqMinute: freqMinute,
+            timeStamp: firebase.database.ServerValue.TIMESTAMP
+        };
 
-    console.log(trainName);
-    console.log(destination);
-    console.log(trainTime);
-    console.log(freqMinute);
+        database.ref().push(trainData);
+        //    stop refresh
+        $("input").val('');
+        return false;
 
-    // fix train time.. convert to mins away and next arrival
+        // logs train data to console
+        console.log(trainData.trainName);
+        console.log(trainData.destination);
+        console.log(trainData.trainTime);
+        console.log(trainData.freqMinute);
 
-    var frequency = parseInt(trainFrequency );
-    var realTime = moment();
-    console.log("Real Time: " + moment().format("HH:mm"));
+        // clear text-box
+        $("#train-input").val("");
+        $("#destination-input").val("");
+        $("#time-input").val();
+        $("#frequency-input").val();
+    });
 
-    var dateCon = moment(childSnapshot.val().trainTime, "HH:mm").subtract(1, "years");
-    console.log(dateCon);
-    var time = moment(dateCon).format('HH:mm');
-    console.log(time);
+    database.ref().on("child_added", function (childSnapshot, prevChildKey) {
 
-    var timeCon = moment(time, "HH:mm").subtract(1, "years");
-    var timeDiff = moment().diff(moment(timeCon), 'minutes');
-    console.log(timeDiff);
+        console.log(childSnapshot.val());
+        var trainName = childSnapshot.val().trainName;
+        var trainDestination = childSnapshot.val().destination;
+        var trainTime = childSnapshot.val().trainTime;
+        var trainFrequency = childSnapshot.val().freqMinute;
 
-    var timeRemain = timeDiff % trainFrequency;
-    console.log(timeRemain);
-    
-    minsAway = trainFrequency - timeRemain;
-    console.log(minsAway);
+        var nextArrival = 0;
+        var minsAway = 0;
 
-    nextArrival = moment().add(minsAway, "minutes");
-    
-    var trainArriving = moment(nextArrival).format("HH:mm")
+        console.log(trainName);
+        console.log(destination);
+        console.log(trainTime);
+        console.log(freqMinute);
+
+        // fix train time.. convert to mins away and next arrival
+
+        var frequency = parseInt(trainFrequency);
+        var realTime = moment();
+        console.log("Real Time: " + moment().format("HH:mm"));
+
+        var dateCon = moment(childSnapshot.val().trainTime, "HH:mm").subtract(1, "years");
+        console.log(dateCon);
+        var time = moment(dateCon).format('HH:mm');
+        console.log(time);
+
+        var timeCon = moment(time, "HH:mm").subtract(1, "years");
+        var timeDiff = moment().diff(moment(timeCon), 'minutes');
+        console.log(timeDiff);
+
+        var timeRemain = timeDiff % trainFrequency;
+        console.log(timeRemain);
+
+        minsAway = trainFrequency - timeRemain;
+        console.log(minsAway);
+
+        nextArrival = moment().add(minsAway, "minutes");
+
+        var trainArriving = moment(nextArrival).format("HH:mm")
+
+        var date = moment().format("MM/DD/YYYY");
 
 
-    $("#train-table > tbody").append("<tr><td>" + trainName + "</td><td>" + trainDestination + "</td><td>" + trainFrequency + "</td><td>" + trainArriving + "</td><td>" + minsAway + "</td></tr>")
+
+
+        $("#train-table > tbody").append("<tr><td>" + trainName + "</td><td>" + trainDestination + "</td><td>" + trainFrequency + "</td><td>" + trainArriving + "</td><td>" + minsAway + "</td></tr>")
+
+        $("#date").text(date);
+
+    });
+
+
+    displayTime();
 
 });
