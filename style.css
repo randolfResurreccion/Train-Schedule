@@ -1,12 +1,22 @@
+body {
+    background-image: url("https://i.pinimg.com/originals/62/d5/66/62d56665c4b87492f1c4b02d0e72ba34.jpg");
+    background-size: 100% auto;
+    
+ 
+}
 
 .container {
     margin: 0, 50px;
+   
 }
 
 
 .jumbotron {
     text-align: center;
-    background-color: rgb(235, 156, 67);
+    /* background-color: rgb(235, 156, 67); */
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/6/60/Walton_with_Leicester_-_Peterborough_East_train_geograph-2791492-by-Ben-Brooksbank.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% auto;
 }
 
 input {
@@ -19,21 +29,34 @@ input {
 
 .panel > .panel-heading {
     
-    background-color: rgba(89, 125, 172, 0.842);
+    background-color: gray;
     color: black;
 
 }
 
 .btn-primary {
-    background-color: rgba(89, 125, 172, 0.842);
+    background-color: white;;
     color: black;
     margin-top: 10px;
 }
 
 #date {
     font-size: 50px;
+    color: black;
+    font-weight: bold;
 }
 
 #clock {
     font-size: 35px;
+    color: white;
+    font-weight: bold;
+}
+
+#submit {
+    border-color: black;
+    background-color: gray;
+}
+
+.panel-default {
+    border-color: black;
 }
